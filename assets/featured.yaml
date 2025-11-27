@@ -1,0 +1,7 @@
+name: pirakansa.github.io
+description: Rust/egui + Trunk で構築したインタラクティブな地図パネル UI のデモです。
+tags:
+  - Rust
+  - egui
+  - WASM
+stars: "120"
