@@ -17,6 +17,7 @@ pub(crate) struct RepoSection {
 pub(crate) struct FeaturedRepo {
     pub(crate) name: String,
     pub(crate) description: String,
+    pub(crate) repository: String,
     pub(crate) tags: Vec<String>,
     pub(crate) stars: String,
 }

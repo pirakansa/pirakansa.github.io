@@ -68,6 +68,7 @@ impl<'a> FeaturedSection<'a> {
             TagChip::new(star_text).show(ui);
         });
         ui.add_space(18.0);
+        let repo_url = featured.repository.clone();
         let repo_button = || {
             egui::Button::new(egui::RichText::new("🔗 リポジトリを開く").color(text::DARK))
                 .fill(egui::Color32::WHITE)
@@ -85,13 +86,17 @@ impl<'a> FeaturedSection<'a> {
         };
         if layout.is_phone() {
             ui.vertical(|ui| {
-                ui.add(repo_button());
+                if ui.add(repo_button()).clicked() {
+                    ui.ctx().open_url(egui::OpenUrl::new_tab(&repo_url));
+                }
                 ui.add_space(8.0);
                 ui.add(detail_button());
             });
         } else {
             ui.horizontal(|ui| {
-                ui.add(repo_button());
+                if ui.add(repo_button()).clicked() {
+                    ui.ctx().open_url(egui::OpenUrl::new_tab(&repo_url));
+                }
                 ui.add(detail_button());
             });
         }

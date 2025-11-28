@@ -1,5 +1,6 @@
 name: pirakansa.github.io
 description: Portal sitemap of pirakansa's owned and favorite repositories
+repository: https://github.com/pirakansa/pirakansa.github.io
 tags:
   - Rust
   - egui
