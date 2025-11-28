@@ -42,19 +42,23 @@ impl<'a> NavigationBar<'a> {
             ui.horizontal(|ui| {
                 title_label(ui);
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    ui.label(egui::RichText::new("👤 プロフィール"));
+                    ui.label(egui::RichText::new("👤 プロフィール").color(egui::Color32::WHITE));
                     ui.add_space(10.0);
-                    ui.label("🔔");
+                    ui.label(egui::RichText::new("🔔").color(egui::Color32::WHITE));
                 });
             });
             search_field(ui, search_query, layout);
             ui.horizontal_wrapped(|ui| {
                 ui.spacing_mut().item_spacing.x = 14.0;
                 for item in PRIMARY_NAV_ITEMS {
-                    ui.label(egui::RichText::new(*item).strong());
+                    ui.label(
+                        egui::RichText::new(*item)
+                            .strong()
+                            .color(egui::Color32::WHITE),
+                    );
                 }
                 for item in SECONDARY_NAV_ITEMS {
-                    ui.label(*item);
+                    ui.label(egui::RichText::new(*item).color(egui::Color32::from_gray(200)));
                 }
             });
         });
@@ -66,19 +70,23 @@ impl<'a> NavigationBar<'a> {
                 title_label(ui);
                 ui.add_space(20.0);
                 for item in PRIMARY_NAV_ITEMS {
-                    ui.label(egui::RichText::new(*item).strong());
+                    ui.label(
+                        egui::RichText::new(*item)
+                            .strong()
+                            .color(egui::Color32::WHITE),
+                    );
                 }
             });
 
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                ui.label(egui::RichText::new("👤 プロフィール"));
+                ui.label(egui::RichText::new("👤 プロフィール").color(egui::Color32::WHITE));
                 ui.add_space(10.0);
-                ui.label("🔔");
+                ui.label(egui::RichText::new("🔔").color(egui::Color32::WHITE));
                 ui.add_space(16.0);
                 search_field(ui, search_query, layout);
                 ui.add_space(14.0);
                 for item in SECONDARY_NAV_ITEMS.iter().rev() {
-                    ui.label(*item);
+                    ui.label(egui::RichText::new(*item).color(egui::Color32::from_gray(200)));
                 }
             });
         });
