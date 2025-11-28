@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   rust:
     runs-on: ubuntu-latest
@@ -15,9 +20,15 @@ jobs:
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+          targets: wasm32-unknown-unknown
 
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2
+
+      - name: Install trunk
+        uses: jetli/trunk-action@v0.5.0
 
       - name: Test
         run: make test
@@ -31,7 +42,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
           path: './dist'
 
       - name: Deploy to GitHub Pages
