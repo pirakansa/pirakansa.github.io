@@ -1,0 +1,8 @@
+name: pirakansa.github.io
+description: Portal sitemap of pirakansa's owned and favorite repositories
+repository: https://github.com/pirakansa/pirakansa.github.io
+tags:
+  - Rust
+  - egui
+  - WASM
+updated_at: "2024-05-28"
