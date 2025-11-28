@@ -1,9 +1,8 @@
 use crate::app::data::RepoSummary;
 use crate::app::layout::ResponsiveLayout;
+use crate::app::theme::{background, stroke, text};
 
 use super::tag_chip::TagChip;
-
-const CARD_STROKE_COLOR: egui::Color32 = egui::Color32::from_rgb(38, 45, 66);
 
 /// Shows a single repository summary as a compact card.
 pub(crate) struct RepoCard<'a> {
@@ -21,8 +20,8 @@ impl<'a> RepoCard<'a> {
         let card_size = egui::vec2(layout.card_width(), 300.0);
         ui.allocate_ui_with_layout(card_size, egui::Layout::top_down(egui::Align::Min), |ui| {
             egui::Frame::default()
-                .fill(egui::Color32::from_rgb(26, 28, 38))
-                .stroke(egui::Stroke::new(1.0, CARD_STROKE_COLOR))
+                .fill(background::CARD)
+                .stroke(egui::Stroke::new(1.0, stroke::CARD))
                 .corner_radius(14.0)
                 .inner_margin(egui::Margin::symmetric(16, 12))
                 .show(ui, |ui| {
@@ -30,7 +29,7 @@ impl<'a> RepoCard<'a> {
                     ui.set_height(card_size.y);
                     ui.vertical(|ui| {
                         egui::Frame::default()
-                            .fill(egui::Color32::from_rgb(58, 90, 158))
+                            .fill(background::CARD_PREVIEW)
                             .corner_radius(12.0)
                             .show(ui, |ui| {
                                 ui.set_height(layout.preview_height());
@@ -49,7 +48,7 @@ impl<'a> RepoCard<'a> {
                                     } else {
                                         ui.label(
                                             egui::RichText::new("リポジトリアイコン")
-                                                .color(egui::Color32::from_white_alpha(180))
+                                                .color(text::WHITE_ALPHA_180)
                                                 .small(),
                                         );
                                     }
@@ -60,18 +59,18 @@ impl<'a> RepoCard<'a> {
                         ui.label(
                             egui::RichText::new(&repo.name)
                                 .strong()
-                                .color(egui::Color32::WHITE),
+                                .color(text::PRIMARY),
                         );
                         ui.label(
                             egui::RichText::new(&repo.description)
                                 .small()
-                                .color(egui::Color32::from_gray(200)),
+                                .color(text::SECONDARY),
                         );
                         ui.add_space(4.0);
                         ui.label(
                             egui::RichText::new(format!("スター: {}", repo.stars))
                                 .small()
-                                .color(egui::Color32::WHITE),
+                                .color(text::PRIMARY),
                         );
                         if let Some(badge) = &repo.badge {
                             ui.add_space(4.0);

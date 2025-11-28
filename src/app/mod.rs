@@ -2,12 +2,14 @@ mod components;
 mod data;
 mod fonts;
 mod layout;
+pub mod theme;
 
 use components::{AttributionFooter, FeaturedSection, NavigationBar, RepoCarousel};
 use data::{load_featured_repo, load_portfolio_data, FeaturedRepo, RepoSection};
 use egui_extras::install_image_loaders;
 use fonts::install_fonts;
 use layout::ResponsiveLayout;
+use theme::background;
 
 /// We derive Deserialize/Serialize so we can persist app state on shutdown.
 #[derive(serde::Deserialize, serde::Serialize)]
@@ -69,7 +71,7 @@ impl eframe::App for TemplateApp {
         egui::CentralPanel::default()
             .frame(
                 egui::Frame::default()
-                    .fill(egui::Color32::from_rgb(9, 11, 19))
+                    .fill(background::APP)
                     .inner_margin(egui::Margin::symmetric(20, 16)),
             )
             .show(ctx, |ui| {

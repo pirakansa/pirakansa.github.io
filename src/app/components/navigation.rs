@@ -1,4 +1,5 @@
 use crate::app::layout::ResponsiveLayout;
+use crate::app::theme::{background, text};
 
 const PRIMARY_NAV_ITEMS: &[&str] = &["ホーム"];
 const SECONDARY_NAV_ITEMS: &[&str] = &["マイリスト"];
@@ -24,7 +25,7 @@ impl<'a> NavigationBar<'a> {
         } = self;
 
         egui::Frame::default()
-            .fill(egui::Color32::from_rgba_premultiplied(5, 7, 16, 230))
+            .fill(background::NAV_BAR)
             .inner_margin(egui::Margin::symmetric(16, 12))
             .corner_radius(12.0)
             .show(ui, |ui| {
@@ -42,23 +43,19 @@ impl<'a> NavigationBar<'a> {
             ui.horizontal(|ui| {
                 title_label(ui);
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    ui.label(egui::RichText::new("👤 プロフィール").color(egui::Color32::WHITE));
+                    ui.label(egui::RichText::new("👤 プロフィール").color(text::PRIMARY));
                     ui.add_space(10.0);
-                    ui.label(egui::RichText::new("🔔").color(egui::Color32::WHITE));
+                    ui.label(egui::RichText::new("🔔").color(text::PRIMARY));
                 });
             });
             search_field(ui, search_query, layout);
             ui.horizontal_wrapped(|ui| {
                 ui.spacing_mut().item_spacing.x = 14.0;
                 for item in PRIMARY_NAV_ITEMS {
-                    ui.label(
-                        egui::RichText::new(*item)
-                            .strong()
-                            .color(egui::Color32::WHITE),
-                    );
+                    ui.label(egui::RichText::new(*item).strong().color(text::PRIMARY));
                 }
                 for item in SECONDARY_NAV_ITEMS {
-                    ui.label(egui::RichText::new(*item).color(egui::Color32::from_gray(200)));
+                    ui.label(egui::RichText::new(*item).color(text::SECONDARY));
                 }
             });
         });
@@ -70,23 +67,19 @@ impl<'a> NavigationBar<'a> {
                 title_label(ui);
                 ui.add_space(20.0);
                 for item in PRIMARY_NAV_ITEMS {
-                    ui.label(
-                        egui::RichText::new(*item)
-                            .strong()
-                            .color(egui::Color32::WHITE),
-                    );
+                    ui.label(egui::RichText::new(*item).strong().color(text::PRIMARY));
                 }
             });
 
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                ui.label(egui::RichText::new("👤 プロフィール").color(egui::Color32::WHITE));
+                ui.label(egui::RichText::new("👤 プロフィール").color(text::PRIMARY));
                 ui.add_space(10.0);
-                ui.label(egui::RichText::new("🔔").color(egui::Color32::WHITE));
+                ui.label(egui::RichText::new("🔔").color(text::PRIMARY));
                 ui.add_space(16.0);
                 search_field(ui, search_query, layout);
                 ui.add_space(14.0);
                 for item in SECONDARY_NAV_ITEMS.iter().rev() {
-                    ui.label(egui::RichText::new(*item).color(egui::Color32::from_gray(200)));
+                    ui.label(egui::RichText::new(*item).color(text::SECONDARY));
                 }
             });
         });
@@ -97,14 +90,14 @@ fn title_label(ui: &mut egui::Ui) {
     ui.label(
         egui::RichText::new("Repositories Map")
             .heading()
-            .color(egui::Color32::from_rgb(59, 154, 255)),
+            .color(text::ACCENT),
     );
 }
 
 fn search_field(ui: &mut egui::Ui, search_query: &mut String, layout: ResponsiveLayout) {
     let width = layout.search_width();
     egui::Frame::new()
-        .fill(egui::Color32::from_rgb(240, 240, 245))
+        .fill(background::SEARCH_FIELD)
         .corner_radius(6.0)
         .inner_margin(egui::Margin::symmetric(8, 4))
         .show(ui, |ui| {
@@ -113,7 +106,7 @@ fn search_field(ui: &mut egui::Ui, search_query: &mut String, layout: Responsive
                 egui::TextEdit::singleline(search_query)
                     .frame(false)
                     .hint_text("リポジトリ名、技術スタック、キーワードを検索")
-                    .text_color(egui::Color32::from_rgb(30, 30, 35)),
+                    .text_color(text::DARK),
             );
         });
 }

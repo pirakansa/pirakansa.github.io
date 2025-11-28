@@ -1,5 +1,6 @@
 use crate::app::data::FeaturedRepo;
 use crate::app::layout::ResponsiveLayout;
+use crate::app::theme::{background, stroke, text};
 
 use super::tag_chip::TagChip;
 use image::load_from_memory;
@@ -19,7 +20,7 @@ impl<'a> FeaturedSection<'a> {
     pub(crate) fn show(self, ui: &mut egui::Ui) {
         let FeaturedSection { featured, layout } = self;
         egui::Frame::default()
-            .fill(egui::Color32::from_rgb(18, 24, 39))
+            .fill(background::FEATURED)
             .shadow(egui::epaint::Shadow {
                 offset: [0, 8],
                 blur: 24,
@@ -53,10 +54,10 @@ impl<'a> FeaturedSection<'a> {
             egui::RichText::new(&featured.name)
                 .size(title_size)
                 .strong()
-                .color(egui::Color32::from_white_alpha(235)),
+                .color(text::WHITE_ALPHA_235),
         );
         ui.add_space(8.0);
-        ui.label(egui::RichText::new(&featured.description).color(egui::Color32::from_gray(210)));
+        ui.label(egui::RichText::new(&featured.description).color(text::MUTED));
         ui.add_space(12.0);
         ui.horizontal_wrapped(|ui| {
             ui.spacing_mut().item_spacing.x = 8.0;
@@ -68,19 +69,17 @@ impl<'a> FeaturedSection<'a> {
         });
         ui.add_space(18.0);
         let repo_button = || {
-            egui::Button::new(
-                egui::RichText::new("🔗 リポジトリを開く").color(egui::Color32::BLACK),
-            )
-            .fill(egui::Color32::from_rgb(255, 255, 255))
-            .min_size(egui::vec2(140.0, 40.0))
-            .corner_radius(10.0)
+            egui::Button::new(egui::RichText::new("🔗 リポジトリを開く").color(text::DARK))
+                .fill(egui::Color32::WHITE)
+                .min_size(egui::vec2(140.0, 40.0))
+                .corner_radius(10.0)
         };
         let detail_button = || {
-            egui::Button::new(egui::RichText::new("README を見る").color(egui::Color32::WHITE))
+            egui::Button::new(egui::RichText::new("README を見る").color(text::PRIMARY))
                 .fill(egui::Color32::TRANSPARENT)
                 .stroke(egui::Stroke {
                     width: 1.0,
-                    color: egui::Color32::from_white_alpha(180),
+                    color: stroke::BUTTON,
                 })
                 .corner_radius(10.0)
         };

@@ -1,5 +1,6 @@
 use crate::app::data::RepoSection;
 use crate::app::layout::ResponsiveLayout;
+use crate::app::theme::text;
 
 use super::repo_card::RepoCard;
 
@@ -19,7 +20,7 @@ impl<'a> RepoCarousel<'a> {
         ui.heading(
             egui::RichText::new(&section.name)
                 .size(18.0)
-                .color(egui::Color32::from_gray(150)),
+                .color(text::SECONDARY),
         );
         egui::ScrollArea::horizontal()
             .id_salt(section.name.as_str())
