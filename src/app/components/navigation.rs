@@ -103,9 +103,17 @@ fn title_label(ui: &mut egui::Ui) {
 
 fn search_field(ui: &mut egui::Ui, search_query: &mut String, layout: ResponsiveLayout) {
     let width = layout.search_width();
-    ui.add_sized(
-        [width, if layout.is_compact() { 32.0 } else { 30.0 }],
-        egui::TextEdit::singleline(search_query)
-            .hint_text("リポジトリ名、技術スタック、キーワードを検索"),
-    );
+    egui::Frame::new()
+        .fill(egui::Color32::from_rgb(240, 240, 245))
+        .corner_radius(6.0)
+        .inner_margin(egui::Margin::symmetric(8, 4))
+        .show(ui, |ui| {
+            ui.add_sized(
+                [width - 16.0, if layout.is_compact() { 24.0 } else { 22.0 }],
+                egui::TextEdit::singleline(search_query)
+                    .frame(false)
+                    .hint_text("リポジトリ名、技術スタック、キーワードを検索")
+                    .text_color(egui::Color32::from_rgb(30, 30, 35)),
+            );
+        });
 }
