@@ -57,14 +57,22 @@ impl<'a> RepoCard<'a> {
                             });
 
                         ui.add_space(10.0);
-                        ui.label(egui::RichText::new(&repo.name).strong());
+                        ui.label(
+                            egui::RichText::new(&repo.name)
+                                .strong()
+                                .color(egui::Color32::WHITE),
+                        );
                         ui.label(
                             egui::RichText::new(&repo.description)
                                 .small()
                                 .color(egui::Color32::from_gray(200)),
                         );
                         ui.add_space(4.0);
-                        ui.label(egui::RichText::new(format!("スター: {}", repo.stars)).small());
+                        ui.label(
+                            egui::RichText::new(format!("スター: {}", repo.stars))
+                                .small()
+                                .color(egui::Color32::WHITE),
+                        );
                         if let Some(badge) = &repo.badge {
                             ui.add_space(4.0);
                             TagChip::new(badge).show(ui);

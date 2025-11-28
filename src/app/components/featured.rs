@@ -76,7 +76,7 @@ impl<'a> FeaturedSection<'a> {
             .corner_radius(10.0)
         };
         let detail_button = || {
-            egui::Button::new("README を見る")
+            egui::Button::new(egui::RichText::new("README を見る").color(egui::Color32::WHITE))
                 .fill(egui::Color32::TRANSPARENT)
                 .stroke(egui::Stroke {
                     width: 1.0,
