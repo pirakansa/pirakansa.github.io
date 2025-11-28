@@ -10,16 +10,15 @@
     },
     "mounts": [
         "source=${localEnv:HOME}/.codex,target=/home/${localEnv:USERNAME:builder}/.codex,type=bind,consistency=cached",
-        "source=${localEnv:XAUTHORITY},target=/home/${localEnv:USERNAME:builder}/.Xauthority,readonly,type=bind,consistency=cached",
-        "source=/tmp/.X11-unix/,target=/tmp/.X11-unix/,type=bind,consistency=cached",
-        "source=/dev/dri/,target=/dev/dri/,type=bind,consistency=cached"
+        "source=${localEnv:XDG_RUNTIME_DIR},target=${localEnv:XDG_RUNTIME_DIR},readonly,type=bind,consistency=cached",
+        "source=/tmp/.X11-unix/,target=/tmp/.X11-unix/,type=bind,consistency=cached"
     ],
     "workspaceMount": "source=${localWorkspaceFolder},target=/work/${localWorkspaceFolderBasename},type=bind,consistency=cached",
     "workspaceFolder": "/work/${localWorkspaceFolderBasename}",
     "remoteUser": "${localEnv:USERNAME:builder}",
     "remoteEnv": {
         "DISPLAY": "${localEnv:DISPLAY}",
-        "XAUTHORITY": "/home/${localEnv:USERNAME:builder}/.Xauthority",
+        "XAUTHORITY": "${localEnv:XAUTHORITY}",
         "PATH": "${containerEnv:PATH}:/home/${localEnv:USERNAME:builder}/bin"
     }
 }
