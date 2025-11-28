@@ -62,9 +62,6 @@ pub mod stroke {
 
     /// Card border color
     pub const CARD: Color32 = Color32::from_rgb(38, 45, 66);
-
-    /// Button border (semi-transparent white)
-    pub const BUTTON: Color32 = Color32::from_rgba_premultiplied(180, 180, 180, 180);
 }
 
 #[cfg(test)]

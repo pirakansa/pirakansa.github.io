@@ -1,6 +1,6 @@
 use crate::app::data::FeaturedRepo;
 use crate::app::layout::ResponsiveLayout;
-use crate::app::theme::{background, stroke, text};
+use crate::app::theme::{background, text};
 
 use super::tag_chip::TagChip;
 use image::load_from_memory;
@@ -75,31 +75,12 @@ impl<'a> FeaturedSection<'a> {
                 .min_size(egui::vec2(140.0, 40.0))
                 .corner_radius(10.0)
         };
-        let detail_button = || {
-            egui::Button::new(egui::RichText::new("README を見る").color(text::PRIMARY))
-                .fill(egui::Color32::TRANSPARENT)
-                .stroke(egui::Stroke {
-                    width: 1.0,
-                    color: stroke::BUTTON,
-                })
-                .corner_radius(10.0)
-        };
-        if layout.is_phone() {
-            ui.vertical(|ui| {
-                if ui.add(repo_button()).clicked() {
-                    ui.ctx().open_url(egui::OpenUrl::new_tab(&repo_url));
-                }
-                ui.add_space(8.0);
-                ui.add(detail_button());
-            });
-        } else {
-            ui.horizontal(|ui| {
-                if ui.add(repo_button()).clicked() {
-                    ui.ctx().open_url(egui::OpenUrl::new_tab(&repo_url));
-                }
-                ui.add(detail_button());
-            });
-        }
+        ui.horizontal_wrapped(|ui| {
+            ui.spacing_mut().item_spacing.x = 12.0;
+            if ui.add(repo_button()).clicked() {
+                ui.ctx().open_url(egui::OpenUrl::new_tab(&repo_url));
+            }
+        });
     }
 
     fn hero_image(ui: &mut egui::Ui, layout: ResponsiveLayout) {
