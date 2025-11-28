@@ -16,7 +16,11 @@ impl<'a> RepoCarousel<'a> {
 
     pub(crate) fn show(self, ui: &mut egui::Ui) {
         let RepoCarousel { section, layout } = self;
-        ui.heading(egui::RichText::new(&section.name).size(18.0));
+        ui.heading(
+            egui::RichText::new(&section.name)
+                .size(18.0)
+                .color(egui::Color32::from_gray(150)),
+        );
         egui::ScrollArea::horizontal()
             .id_salt(section.name.as_str())
             .animated(true)
