@@ -5,137 +5,137 @@ sections:
         description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
         image_url: https://placehold.co/600x400.png
         badge: Rust
-        stars: "120"
+        updated_at: "2024-05-28"
       - name: CityFlow
         description: 都市データをブラウザで可視化する WASM ダッシュボード
         badge: WASM
         image_url: https://placehold.co/600x600.jpeg
-        stars: "98"
+        updated_at: "2024-05-05"
       - name: StreamNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツール
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: Streaああm42Notes
         description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: Mapt4tPanels
         description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
         badge: Rust
-        stars: "120"
+        updated_at: "2024-05-28"
       - name: Ci234tyF44low
         description: 都市データをブラウeeザで可視化する WASM ダッシュボード
         badge: WA3r3M
-        stars: "98"
+        updated_at: "2024-05-05"
       - name: Stre342amNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツール
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: StreaああmNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: MapPa42342neeeels
         description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
         badge: Rust
-        stars: "120"
+        updated_at: "2024-05-28"
       - name: 55
         description: 都市データをブラウザで可視化する WASM ダッシュボード
         badge: WASsM
-        stars: "98"
+        updated_at: "2024-05-05"
       - name: Stre44444444444fesamNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツール
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: Streff2222222aああmNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
-        stars: "87"
+        updated_at: "2024-04-22"
   - name: クラウド / バックエンド
     repos:
       - name: OrbitQueue
         description: Rust + NATS で書かれた軽量イベントキュー
         badge: Async
-        stars: "140"
+        updated_at: "2024-06-10"
       - name: DeltaLakehouse
         description: S3 互換ストレージ向けの分析基盤ツール群
-        stars: "105"
+        updated_at: "2024-05-15"
       - name: EchoStack
         description: gRPC/GraphQL を共存させたマルチテナント API
         badge: gRPC
-        stars: "76"
+        updated_at: "2024-04-10"
       - name: StreamNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツール
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: Streaああm42Notes
         description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: Mapt4tPanels
         description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
         badge: Rust
-        stars: "120"
+        updated_at: "2024-05-28"
       - name: Ci234tyF44low
         description: 都市データをブラウeeザで可視化する WASM ダッシュボード
         badge: WA3r3M
-        stars: "98"
+        updated_at: "2024-05-05"
       - name: Stre342amNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツール
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: StreaああmNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: MapPa42342neeeels
         description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
         badge: Rust
-        stars: "120"
+        updated_at: "2024-05-28"
       - name: 55
         description: 都市データをブラウザで可視化する WASM ダッシュボード
         badge: WASsM
-        stars: "98"
+        updated_at: "2024-05-05"
       - name: Stre44444444444fesamNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツール
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: Streff2222222aああmNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
-        stars: "87"
+        updated_at: "2024-04-22"
   - name: ツール / ライブラリ
     repos:
       - name: GlyphAtlas
         description: フォントを高速にバンドルするビルドツール
-        stars: "64"
+        updated_at: "2024-03-30"
       - name: Trailblazer
         description: CI 向けの Rust ベンチマークランナー
         badge: CI
-        stars: "59"
+        updated_at: "2024-03-18"
       - name: OrbitalTestkit
         description: WebAssembly を用いたシナリオテストユーティリティ
         badge: Testing
-        stars: "45"
+        updated_at: "2024-03-01"
       - name: StreamNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツール
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: Streaああm42Notes
         description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: Mapt4tPanels
         description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
         badge: Rust
-        stars: "120"
+        updated_at: "2024-05-28"
       - name: Ci234tyF44low
         description: 都市データをブラウeeザで可視化する WASM ダッシュボード
         badge: WA3r3M
-        stars: "98"
+        updated_at: "2024-05-05"
       - name: Stre342amNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツール
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: StreaああmNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: MapPa42342neeeels
         description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
         badge: Rust
-        stars: "120"
+        updated_at: "2024-05-28"
       - name: 55
         description: 都市データをブラウザで可視化する WASM ダッシュボード
         badge: WASsM
-        stars: "98"
+        updated_at: "2024-05-05"
       - name: Stre44444444444fesamNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツール
-        stars: "87"
+        updated_at: "2024-04-22"
       - name: Streff2222222aああmNotes
         description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
-        stars: "87"
+        updated_at: "2024-04-22"

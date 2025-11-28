@@ -64,8 +64,6 @@ impl<'a> FeaturedSection<'a> {
             for tag in &featured.tags {
                 TagChip::new(tag).show(ui);
             }
-            let star_text = format!("⭐ {}", featured.stars);
-            TagChip::new(star_text).show(ui);
         });
         ui.add_space(18.0);
         let repo_url = featured.repository.clone();

@@ -4,7 +4,7 @@ pub(crate) struct RepoSummary {
     pub(crate) description: String,
     pub(crate) image_url: Option<String>,
     pub(crate) badge: Option<String>,
-    pub(crate) stars: String,
+    pub(crate) updated_at: String,
 }
 
 #[derive(Clone, serde::Deserialize, serde::Serialize, PartialEq, Eq)]
@@ -19,7 +19,7 @@ pub(crate) struct FeaturedRepo {
     pub(crate) description: String,
     pub(crate) repository: String,
     pub(crate) tags: Vec<String>,
-    pub(crate) stars: String,
+    pub(crate) updated_at: String,
 }
 
 pub(crate) fn load_featured_repo() -> FeaturedRepo {

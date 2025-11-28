@@ -68,7 +68,7 @@ impl<'a> RepoCard<'a> {
                         );
                         ui.add_space(4.0);
                         ui.label(
-                            egui::RichText::new(format!("スター: {}", repo.stars))
+                            egui::RichText::new(format!("最終更新: {}", repo.updated_at))
                                 .small()
                                 .color(text::PRIMARY),
                         );
