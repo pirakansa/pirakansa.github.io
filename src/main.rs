@@ -45,10 +45,10 @@ fn main() {
             .expect("No document");
 
         let canvas = document
-            .get_element_by_id("the_canvas_id")
-            .expect("Failed to find the_canvas_id")
+            .get_element_by_id("canvas_id")
+            .expect("Failed to find canvas_id")
             .dyn_into::<web_sys::HtmlCanvasElement>()
-            .expect("the_canvas_id was not a HtmlCanvasElement");
+            .expect("canvas_id was not a HtmlCanvasElement");
 
         let start_result = eframe::WebRunner::new()
             .start(

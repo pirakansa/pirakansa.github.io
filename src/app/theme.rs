@@ -64,6 +64,21 @@ pub mod stroke {
     pub const CARD: Color32 = Color32::from_rgb(38, 45, 66);
 }
 
+/// Button-specific colors that need platform awareness.
+pub mod button {
+    use super::*;
+
+    /// Settings action button background.
+    #[inline]
+    pub fn settings_fill() -> Color32 {
+        if cfg!(target_arch = "wasm32") {
+            Color32::from_rgb(40, 45, 66)
+        } else {
+            Color32::from_rgba_premultiplied(22, 25, 40, 220)
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

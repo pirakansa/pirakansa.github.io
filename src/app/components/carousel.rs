@@ -17,6 +17,7 @@ impl<'a> RepoCarousel<'a> {
 
     pub(crate) fn show(self, ui: &mut egui::Ui) {
         let RepoCarousel { section, layout } = self;
+        ui.add_space(8.0);
         ui.heading(
             egui::RichText::new(&section.name)
                 .size(18.0)
@@ -26,17 +27,18 @@ impl<'a> RepoCarousel<'a> {
             .id_salt(section.name.as_str())
             .animated(true)
             .auto_shrink([false, true])
+            .scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden)
             .show(ui, |ui| {
                 ui.with_layout(egui::Layout::left_to_right(egui::Align::Min), |ui| {
-                    for repo in &section.repos {
+                    for repo in &section.items {
                         ui.push_id((&section.name, &repo.name), |ui| {
                             RepoCard::new(repo, layout).show(ui);
                         });
                         ui.add_space(12.0);
                     }
                 });
-                // Keep the scroll bar from overlapping the card content.
-                ui.add_space(8.0);
             });
+        // Keep the scroll bar from overlapping the card content.
+        ui.add_space(8.0);
     }
 }

@@ -4,8 +4,8 @@ mod fonts;
 mod layout;
 pub mod theme;
 
-use components::{AttributionFooter, FeaturedSection, NavigationBar, RepoCarousel};
-use data::{load_featured_repo, load_portfolio_data, FeaturedRepo, RepoSection};
+use components::{AttributionFooter, FeaturedSection, NavigationBar, RepoCarousel, SettingsAction};
+use data::{load_featured_repo, FeaturedRepo, PortfolioLoadState, PortfolioLoader, RepoSection};
 use egui_extras::install_image_loaders;
 use fonts::install_fonts;
 use layout::ResponsiveLayout;
@@ -18,17 +18,22 @@ pub struct TemplateApp {
     featured: FeaturedRepo,
     sections: Vec<RepoSection>,
     search_query: String,
+    #[serde(skip)]
+    settings_menu_open: bool,
+    #[serde(skip)]
+    portfolio_loader: PortfolioLoader,
 }
 
 impl Default for TemplateApp {
     fn default() -> Self {
         let featured = load_featured_repo();
-        let sections = load_portfolio_data();
 
         Self {
             featured,
-            sections,
+            sections: Vec::new(),
             search_query: String::new(),
+            settings_menu_open: false,
+            portfolio_loader: PortfolioLoader::new(),
         }
     }
 }
@@ -55,6 +60,28 @@ impl TemplateApp {
             Default::default()
         }
     }
+    fn handle_settings_action(
+        &mut self,
+        action: SettingsAction,
+        ctx: &egui::Context,
+        frame: &mut eframe::Frame,
+    ) {
+        match action {
+            SettingsAction::RefreshRepoData => {
+                self.portfolio_loader = PortfolioLoader::new();
+                self.portfolio_loader.start_loading(ctx);
+            }
+            SettingsAction::ClearCache => {
+                let replacement = TemplateApp::default();
+                if let Some(storage) = frame.storage_mut() {
+                    eframe::set_value(storage, eframe::APP_KEY, &replacement);
+                    storage.flush();
+                }
+                ctx.memory_mut(|mem| *mem = egui::Memory::default());
+                *self = replacement;
+            }
+        }
+    }
 }
 
 impl eframe::App for TemplateApp {
@@ -64,7 +91,15 @@ impl eframe::App for TemplateApp {
     }
 
     /// Called each time the UI needs repainting, which may be many times per second.
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        // URLからポートフォリオデータの取得を開始
+        self.portfolio_loader.start_loading(ctx);
+
+        // ロード完了時にデータを更新
+        if let PortfolioLoadState::Loaded(sections) = self.portfolio_loader.state() {
+            self.sections = sections;
+        }
+
         // Put your widgets into a `SidePanel`, `TopBottomPanel`, `CentralPanel`, `Window` or `Area`.
         // For inspiration and more examples, go to https://emilk.github.io/egui
 
@@ -81,11 +116,42 @@ impl eframe::App for TemplateApp {
                     .show(ui, |ui| {
                         ui.spacing_mut().item_spacing = egui::vec2(18.0, 14.0);
                         let layout = ResponsiveLayout::from_width(ui.available_width());
-                        NavigationBar::new(&mut self.search_query, layout).show(ui);
+                        let action = NavigationBar::new(
+                            &mut self.search_query,
+                            &mut self.settings_menu_open,
+                            layout,
+                        )
+                        .show(ui);
+                        if let Some(action) = action {
+                            self.handle_settings_action(action, ctx, frame);
+                        }
                         FeaturedSection::new(&self.featured, layout).show(ui);
                         ui.separator();
-                        for section in &self.sections {
-                            RepoCarousel::new(section, layout).show(ui);
+
+                        // ポートフォリオの状態に応じて表示を変更
+                        match self.portfolio_loader.state() {
+                            PortfolioLoadState::Loading | PortfolioLoadState::NotStarted => {
+                                ui.spinner();
+                                ui.label("Loading portfolio...");
+                            }
+                            PortfolioLoadState::Error(err) => {
+                                ui.colored_label(egui::Color32::RED, format!("Error: {err}"));
+                                // エラー時はフォールバックデータを表示
+                                for section in &self.sections {
+                                    let filtered = section.filter_by_query(&self.search_query);
+                                    if !filtered.items.is_empty() {
+                                        RepoCarousel::new(&filtered, layout).show(ui);
+                                    }
+                                }
+                            }
+                            PortfolioLoadState::Loaded(_) => {
+                                for section in &self.sections {
+                                    let filtered = section.filter_by_query(&self.search_query);
+                                    if !filtered.items.is_empty() {
+                                        RepoCarousel::new(&filtered, layout).show(ui);
+                                    }
+                                }
+                            }
                         }
 
                         ui.add_space(12.0);
@@ -101,15 +167,12 @@ mod tests {
     use super::*;
 
     #[test]
-    fn default_ui_data_contains_curated_rows() {
+    fn default_ui_data_contains_featured() {
         let app = TemplateApp::default();
 
         assert!(!app.featured.name.is_empty());
-        assert!(!app.sections.is_empty(), "セクションが必要です");
-        assert!(app
-            .sections
-            .iter()
-            .all(|row| !row.name.is_empty() && !row.repos.is_empty()));
+        // sections は URL から非同期でロードされるため、初期状態では空
+        assert!(app.sections.is_empty(), "セクションは初期状態で空");
     }
 
     #[test]
