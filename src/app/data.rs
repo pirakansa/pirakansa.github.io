@@ -32,14 +32,8 @@ pub(crate) fn load_featured_repo() -> FeaturedRepo {
 pub(crate) fn load_portfolio_data() -> Vec<RepoSection> {
     const PORTFOLIO_YAML: &str = include_str!("../../assets/portfolio.yaml");
 
-    serde_yaml::from_str::<PortfolioSections>(PORTFOLIO_YAML)
+    serde_yaml::from_str::<Vec<RepoSection>>(PORTFOLIO_YAML)
         .expect("portfolio YAML should be valid")
-        .sections
-}
-
-#[derive(Clone, serde::Deserialize, serde::Serialize, PartialEq, Eq)]
-struct PortfolioSections {
-    sections: Vec<RepoSection>,
 }
 
 #[cfg(test)]
