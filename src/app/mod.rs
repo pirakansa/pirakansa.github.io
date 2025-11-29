@@ -138,12 +138,18 @@ impl eframe::App for TemplateApp {
                                 ui.colored_label(egui::Color32::RED, format!("Error: {err}"));
                                 // エラー時はフォールバックデータを表示
                                 for section in &self.sections {
-                                    RepoCarousel::new(section, layout).show(ui);
+                                    let filtered = section.filter_by_query(&self.search_query);
+                                    if !filtered.items.is_empty() {
+                                        RepoCarousel::new(&filtered, layout).show(ui);
+                                    }
                                 }
                             }
                             PortfolioLoadState::Loaded(_) => {
                                 for section in &self.sections {
-                                    RepoCarousel::new(section, layout).show(ui);
+                                    let filtered = section.filter_by_query(&self.search_query);
+                                    if !filtered.items.is_empty() {
+                                        RepoCarousel::new(&filtered, layout).show(ui);
+                                    }
                                 }
                             }
                         }
