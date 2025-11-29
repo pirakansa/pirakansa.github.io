@@ -1,5 +1,5 @@
 use crate::app::layout::ResponsiveLayout;
-use crate::app::theme::{background, text};
+use crate::app::theme::{background, button, text};
 
 const PRIMARY_NAV_ITEMS: &[&str] = &["ホーム"];
 const SECONDARY_NAV_ITEMS: &[&str] = &["マイリスト"];
@@ -43,7 +43,7 @@ impl<'a> NavigationBar<'a> {
             ui.horizontal(|ui| {
                 title_label(ui);
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    ui.label(egui::RichText::new("👤 プロフィール").color(text::PRIMARY));
+                    ui.add(settings_button());
                     ui.add_space(10.0);
                     ui.label(egui::RichText::new("🔔").color(text::PRIMARY));
                 });
@@ -72,7 +72,7 @@ impl<'a> NavigationBar<'a> {
             });
 
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                ui.label(egui::RichText::new("👤 プロフィール").color(text::PRIMARY));
+                ui.add(settings_button());
                 ui.add_space(10.0);
                 ui.label(egui::RichText::new("🔔").color(text::PRIMARY));
                 ui.add_space(16.0);
@@ -84,6 +84,13 @@ impl<'a> NavigationBar<'a> {
             });
         });
     }
+}
+
+fn settings_button() -> egui::Button<'static> {
+    egui::Button::new(egui::RichText::new("⚙ 設定").color(text::PRIMARY))
+        .fill(button::settings_fill())
+        .min_size(egui::vec2(90.0, 32.0))
+        .corner_radius(8.0)
 }
 
 fn title_label(ui: &mut egui::Ui) {
