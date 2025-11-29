@@ -1,3 +1,9 @@
+use std::sync::{Arc, Mutex};
+
+/// ポートフォリオデータを取得するURL
+pub(crate) const PORTFOLIO_URL: &str =
+    "https://raw.githubusercontent.com/pirakansa/Gridelle_example/refs/heads/main/portfolio.yaml";
+
 #[derive(Clone, serde::Deserialize, serde::Serialize, PartialEq, Eq)]
 pub(crate) struct RepoSummary {
     pub(crate) name: String,
@@ -37,11 +43,81 @@ pub(crate) fn load_featured_repo() -> FeaturedRepo {
     serde_yaml::from_str::<FeaturedRepo>(FEATURED_YAML).expect("featured YAML should be valid")
 }
 
-pub(crate) fn load_portfolio_data() -> Vec<RepoSection> {
-    const PORTFOLIO_YAML: &str = include_str!("../../assets/portfolio.yaml");
+/// ポートフォリオデータのロード状態
+#[derive(Clone, Default)]
+pub(crate) enum PortfolioLoadState {
+    #[default]
+    NotStarted,
+    Loading,
+    Loaded(Vec<RepoSection>),
+    Error(String),
+}
 
-    serde_yaml::from_str::<Vec<RepoSection>>(PORTFOLIO_YAML)
-        .expect("portfolio YAML should be valid")
+/// 非同期でポートフォリオデータを取得するためのハンドラ
+#[derive(Clone, Default)]
+pub(crate) struct PortfolioLoader {
+    state: Arc<Mutex<PortfolioLoadState>>,
+}
+
+impl PortfolioLoader {
+    pub(crate) fn new() -> Self {
+        Self {
+            state: Arc::new(Mutex::new(PortfolioLoadState::NotStarted)),
+        }
+    }
+
+    /// 現在の状態を取得します
+    pub(crate) fn state(&self) -> PortfolioLoadState {
+        self.state.lock().unwrap().clone()
+    }
+
+    /// URLからポートフォリオデータの取得を開始します
+    pub(crate) fn start_loading(&self, ctx: &egui::Context) {
+        {
+            let mut state = self.state.lock().unwrap();
+            if !matches!(*state, PortfolioLoadState::NotStarted) {
+                return;
+            }
+            *state = PortfolioLoadState::Loading;
+        }
+
+        let state = self.state.clone();
+        let ctx = ctx.clone();
+
+        ehttp::fetch(
+            ehttp::Request::get(PORTFOLIO_URL),
+            move |result: ehttp::Result<ehttp::Response>| {
+                let new_state = match result {
+                    Ok(response) => {
+                        if response.ok {
+                            match response.text() {
+                                Some(text) => {
+                                    match serde_yaml::from_str::<Vec<RepoSection>>(text) {
+                                        Ok(sections) => PortfolioLoadState::Loaded(sections),
+                                        Err(e) => PortfolioLoadState::Error(format!(
+                                            "YAML parse error: {e}"
+                                        )),
+                                    }
+                                }
+                                None => PortfolioLoadState::Error(
+                                    "Response body is not valid UTF-8".to_string(),
+                                ),
+                            }
+                        } else {
+                            PortfolioLoadState::Error(format!(
+                                "HTTP error: {} {}",
+                                response.status, response.status_text
+                            ))
+                        }
+                    }
+                    Err(e) => PortfolioLoadState::Error(format!("Network error: {e}")),
+                };
+
+                *state.lock().unwrap() = new_state;
+                ctx.request_repaint();
+            },
+        );
+    }
 }
 
 #[cfg(test)]
@@ -54,15 +130,6 @@ mod tests {
         assert!(
             !data.name.is_empty(),
             "featured data should load from its dedicated YAML"
-        );
-    }
-
-    #[test]
-    fn load_portfolio_data_reads_sections() {
-        let sections = load_portfolio_data();
-        assert!(
-            !sections.is_empty(),
-            "sections should still load from portfolio.yaml"
         );
     }
 }

@@ -5,7 +5,7 @@ mod layout;
 pub mod theme;
 
 use components::{AttributionFooter, FeaturedSection, NavigationBar, RepoCarousel};
-use data::{load_featured_repo, load_portfolio_data, FeaturedRepo, RepoSection};
+use data::{load_featured_repo, FeaturedRepo, PortfolioLoadState, PortfolioLoader, RepoSection};
 use egui_extras::install_image_loaders;
 use fonts::install_fonts;
 use layout::ResponsiveLayout;
@@ -18,17 +18,19 @@ pub struct TemplateApp {
     featured: FeaturedRepo,
     sections: Vec<RepoSection>,
     search_query: String,
+    #[serde(skip)]
+    portfolio_loader: PortfolioLoader,
 }
 
 impl Default for TemplateApp {
     fn default() -> Self {
         let featured = load_featured_repo();
-        let sections = load_portfolio_data();
 
         Self {
             featured,
-            sections,
+            sections: Vec::new(),
             search_query: String::new(),
+            portfolio_loader: PortfolioLoader::new(),
         }
     }
 }
@@ -65,6 +67,14 @@ impl eframe::App for TemplateApp {
 
     /// Called each time the UI needs repainting, which may be many times per second.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        // URLからポートフォリオデータの取得を開始
+        self.portfolio_loader.start_loading(ctx);
+
+        // ロード完了時にデータを更新
+        if let PortfolioLoadState::Loaded(sections) = self.portfolio_loader.state() {
+            self.sections = sections;
+        }
+
         // Put your widgets into a `SidePanel`, `TopBottomPanel`, `CentralPanel`, `Window` or `Area`.
         // For inspiration and more examples, go to https://emilk.github.io/egui
 
@@ -84,8 +94,25 @@ impl eframe::App for TemplateApp {
                         NavigationBar::new(&mut self.search_query, layout).show(ui);
                         FeaturedSection::new(&self.featured, layout).show(ui);
                         ui.separator();
-                        for section in &self.sections {
-                            RepoCarousel::new(section, layout).show(ui);
+
+                        // ポートフォリオの状態に応じて表示を変更
+                        match self.portfolio_loader.state() {
+                            PortfolioLoadState::Loading | PortfolioLoadState::NotStarted => {
+                                ui.spinner();
+                                ui.label("Loading portfolio...");
+                            }
+                            PortfolioLoadState::Error(err) => {
+                                ui.colored_label(egui::Color32::RED, format!("Error: {err}"));
+                                // エラー時はフォールバックデータを表示
+                                for section in &self.sections {
+                                    RepoCarousel::new(section, layout).show(ui);
+                                }
+                            }
+                            PortfolioLoadState::Loaded(_) => {
+                                for section in &self.sections {
+                                    RepoCarousel::new(section, layout).show(ui);
+                                }
+                            }
                         }
 
                         ui.add_space(12.0);
@@ -101,15 +128,12 @@ mod tests {
     use super::*;
 
     #[test]
-    fn default_ui_data_contains_curated_rows() {
+    fn default_ui_data_contains_featured() {
         let app = TemplateApp::default();
 
         assert!(!app.featured.name.is_empty());
-        assert!(!app.sections.is_empty(), "セクションが必要です");
-        assert!(app
-            .sections
-            .iter()
-            .all(|row| !row.name.is_empty() && !row.items.is_empty()));
+        // sections は URL から非同期でロードされるため、初期状態では空
+        assert!(app.sections.is_empty(), "セクションは初期状態で空");
     }
 
     #[test]

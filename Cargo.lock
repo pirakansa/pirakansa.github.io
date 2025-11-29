@@ -1760,6 +1760,7 @@ dependencies = [
  "eframe",
  "egui",
  "egui_extras",
+ "ehttp",
  "env_logger",
  "image",
  "log",
