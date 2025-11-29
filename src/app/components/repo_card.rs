@@ -18,88 +18,97 @@ impl<'a> RepoCard<'a> {
     pub(crate) fn show(self, ui: &mut egui::Ui) {
         let RepoCard { repo, layout } = self;
         let card_size = egui::vec2(layout.card_width(), 300.0);
-        ui.allocate_ui_with_layout(card_size, egui::Layout::top_down(egui::Align::Min), |ui| {
-            egui::Frame::default()
-                .fill(background::CARD)
-                .stroke(egui::Stroke::new(1.0, stroke::CARD))
-                .corner_radius(14.0)
-                .inner_margin(egui::Margin::symmetric(16, 12))
-                .show(ui, |ui| {
-                    ui.set_width(card_size.x);
-                    ui.set_height(card_size.y);
-                    ui.vertical(|ui| {
-                        egui::Frame::default()
-                            .fill(background::CARD_PREVIEW)
-                            .corner_radius(12.0)
-                            .show(ui, |ui| {
-                                ui.set_height(layout.preview_height());
-                                ui.centered_and_justified(|ui| {
-                                    let image_url = repo
-                                        .image_url
-                                        .as_ref()
-                                        .filter(|url| !url.trim().is_empty());
-                                    if let Some(image_url) = image_url {
-                                        let max_size = egui::vec2(
-                                            ui.available_width(),
-                                            layout.preview_height(),
-                                        );
-                                        let image = egui::Image::from_uri(image_url.clone())
-                                            .maintain_aspect_ratio(true)
-                                            .max_size(max_size)
-                                            .shrink_to_fit()
-                                            .corner_radius(10.0);
-                                        ui.add(image);
-                                    } else {
-                                        let fallback_icon = egui::RichText::new("🖼")
-                                            .color(text::WHITE_ALPHA_180)
-                                            .size(layout.preview_height() * 0.5);
-                                        ui.add(
-                                            egui::Label::new(fallback_icon)
-                                                .selectable(false),
-                                        );
-                                    }
+        let response = ui
+            .allocate_ui_with_layout(card_size, egui::Layout::top_down(egui::Align::Min), |ui| {
+                egui::Frame::default()
+                    .fill(background::CARD)
+                    .stroke(egui::Stroke::new(1.0, stroke::CARD))
+                    .corner_radius(14.0)
+                    .inner_margin(egui::Margin::symmetric(16, 12))
+                    .show(ui, |ui| {
+                        ui.set_width(card_size.x);
+                        ui.set_height(card_size.y);
+                        ui.vertical(|ui| {
+                            egui::Frame::default()
+                                .fill(background::CARD_PREVIEW)
+                                .corner_radius(12.0)
+                                .show(ui, |ui| {
+                                    ui.set_height(layout.preview_height());
+                                    ui.centered_and_justified(|ui| {
+                                        let image_url = repo
+                                            .image_url
+                                            .as_ref()
+                                            .filter(|url| !url.trim().is_empty());
+                                        if let Some(image_url) = image_url {
+                                            let max_size = egui::vec2(
+                                                ui.available_width(),
+                                                layout.preview_height(),
+                                            );
+                                            let image = egui::Image::from_uri(image_url.clone())
+                                                .maintain_aspect_ratio(true)
+                                                .max_size(max_size)
+                                                .shrink_to_fit()
+                                                .corner_radius(10.0);
+                                            ui.add(image);
+                                        } else {
+                                            let fallback_icon = egui::RichText::new("🖼")
+                                                .color(text::WHITE_ALPHA_180)
+                                                .size(layout.preview_height() * 0.5);
+                                            ui.add(
+                                                egui::Label::new(fallback_icon).selectable(false),
+                                            );
+                                        }
+                                    });
                                 });
-                            });
 
-                        ui.add_space(10.0);
-                        ui.label(
-                            egui::RichText::new(&repo.name)
-                                .strong()
-                                .color(text::PRIMARY),
-                        );
-                        ui.label(
-                            egui::RichText::new(&repo.description)
-                                .small()
-                                .color(text::SECONDARY),
-                        );
-                        ui.add_space(4.0);
-                        if let Some(updated_at) = repo
-                            .updated_at
-                            .as_ref()
-                            .map(|value| value.trim())
-                            .filter(|value| !value.is_empty())
-                        {
+                            ui.add_space(10.0);
                             ui.label(
-                                egui::RichText::new(format!("最終更新: {updated_at}"))
-                                    .small()
+                                egui::RichText::new(&repo.name)
+                                    .strong()
                                     .color(text::PRIMARY),
                             );
-                        }
-                        if let Some(badges) = &repo.badges {
+                            ui.label(
+                                egui::RichText::new(&repo.description)
+                                    .small()
+                                    .color(text::SECONDARY),
+                            );
                             ui.add_space(4.0);
-                            ui.horizontal_wrapped(|ui| {
-                                ui.spacing_mut().item_spacing.x = 4.0;
-                                for badge in badges
-                                    .split(',')
-                                    .map(|s| s.trim())
-                                    .filter(|s| !s.is_empty())
-                                {
-                                    TagChip::new(badge).show(ui);
-                                }
-                            });
-                        }
+                            if let Some(updated_at) = repo
+                                .updated_at
+                                .as_ref()
+                                .map(|value| value.trim())
+                                .filter(|value| !value.is_empty())
+                            {
+                                ui.label(
+                                    egui::RichText::new(format!("最終更新: {updated_at}"))
+                                        .small()
+                                        .color(text::PRIMARY),
+                                );
+                            }
+                            if let Some(badges) = &repo.badges {
+                                ui.add_space(4.0);
+                                ui.horizontal_wrapped(|ui| {
+                                    ui.spacing_mut().item_spacing.x = 4.0;
+                                    for badge in badges
+                                        .split(',')
+                                        .map(|s| s.trim())
+                                        .filter(|s| !s.is_empty())
+                                    {
+                                        TagChip::new(badge).show(ui);
+                                    }
+                                });
+                            }
+                        });
                     });
-                });
-        });
+            })
+            .response
+            .interact(egui::Sense::click());
+        if response.clicked() {
+            let repo_url = repo.repo_url.trim();
+            if !repo_url.is_empty() {
+                ui.ctx()
+                    .open_url(egui::OpenUrl::new_tab(repo_url.to_owned()));
+            }
+        }
     }
 }

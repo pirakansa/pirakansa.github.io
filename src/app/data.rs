@@ -9,6 +9,7 @@ pub(crate) struct RepoSummary {
     pub(crate) name: String,
     pub(crate) description: String,
     pub(crate) image_url: Option<String>,
+    pub(crate) repo_url: String,
     #[serde(default)]
     pub(crate) badges: Option<String>,
     #[serde(default)]
