@@ -28,7 +28,7 @@ impl<'a> RepoCarousel<'a> {
             .auto_shrink([false, true])
             .show(ui, |ui| {
                 ui.with_layout(egui::Layout::left_to_right(egui::Align::Min), |ui| {
-                    for repo in &section.repos {
+                    for repo in &section.items {
                         ui.push_id((&section.name, &repo.name), |ui| {
                             RepoCard::new(repo, layout).show(ui);
                         });

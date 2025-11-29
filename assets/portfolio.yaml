@@ -1,5 +1,5 @@
 - name: My Repositories
-  repos:
+  items:
     - name: sandbox-pages
       description: react + vite 構成の遊び場です。GitHub Flowで運用します。
       image_url: https://placehold.co/600x400.png
@@ -54,7 +54,7 @@
       description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
       updated_at: "2024-04-22"
 - name: クラウド / バックエンド
-  repos:
+  items:
     - name: OrbitQueue
       description: Rust + NATS で書かれた軽量イベントキュー
       badges:
@@ -107,7 +107,7 @@
       description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
       updated_at: "2024-04-22"
 - name: ツール / ライブラリ
-  repos:
+  items:
     - name: GlyphAtlas
       description: フォントを高速にバンドルするビルドツール
       updated_at: "2024-03-30"

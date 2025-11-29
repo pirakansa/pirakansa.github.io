@@ -11,7 +11,7 @@ pub(crate) struct RepoSummary {
 #[derive(Clone, serde::Deserialize, serde::Serialize, PartialEq, Eq)]
 pub(crate) struct RepoSection {
     pub(crate) name: String,
-    pub(crate) repos: Vec<RepoSummary>,
+    pub(crate) items: Vec<RepoSummary>,
 }
 
 #[derive(Clone, serde::Deserialize, serde::Serialize, PartialEq, Eq)]

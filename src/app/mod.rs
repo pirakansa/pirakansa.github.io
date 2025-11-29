@@ -109,7 +109,7 @@ mod tests {
         assert!(app
             .sections
             .iter()
-            .all(|row| !row.name.is_empty() && !row.repos.is_empty()));
+            .all(|row| !row.name.is_empty() && !row.items.is_empty()));
     }
 
     #[test]
