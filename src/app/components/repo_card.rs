@@ -46,11 +46,10 @@ impl<'a> RepoCard<'a> {
                                             .corner_radius(10.0);
                                         ui.add(image);
                                     } else {
-                                        ui.label(
-                                            egui::RichText::new("リポジトリアイコン")
-                                                .color(text::WHITE_ALPHA_180)
-                                                .small(),
-                                        );
+                                        let fallback_icon = egui::RichText::new("🖼")
+                                            .color(text::WHITE_ALPHA_180)
+                                            .size(layout.preview_height() * 0.5);
+                                        ui.label(fallback_icon);
                                     }
                                 });
                             });
