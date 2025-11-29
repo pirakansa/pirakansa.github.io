@@ -1,5 +1,10 @@
 use crate::app::theme::{background, button, stroke, text};
 
+/// Actions emitted from the settings menu.
+pub(crate) enum SettingsAction {
+    ClearCache,
+}
+
 /// Handles the settings dropdown menu shown from the navigation bar.
 pub(crate) struct SettingsMenu<'a> {
     open: &'a mut bool,
@@ -10,7 +15,7 @@ impl<'a> SettingsMenu<'a> {
         Self { open }
     }
 
-    pub(crate) fn show(&mut self, ui: &mut egui::Ui) {
+    pub(crate) fn show(&mut self, ui: &mut egui::Ui) -> Option<SettingsAction> {
         let response = ui.add(Self::button());
         let mut just_opened = false;
 
@@ -23,7 +28,7 @@ impl<'a> SettingsMenu<'a> {
             }
         }
 
-        self.show_popup(ui.ctx(), response.rect, just_opened);
+        self.show_popup(ui.ctx(), response.rect, just_opened)
     }
 
     fn button() -> egui::Button<'static> {
@@ -33,9 +38,14 @@ impl<'a> SettingsMenu<'a> {
             .corner_radius(8.0)
     }
 
-    fn show_popup(&mut self, ctx: &egui::Context, button_rect: egui::Rect, just_opened: bool) {
+    fn show_popup(
+        &mut self,
+        ctx: &egui::Context,
+        button_rect: egui::Rect,
+        just_opened: bool,
+    ) -> Option<SettingsAction> {
         if !*self.open {
-            return;
+            return None;
         }
 
         let menu_width = 200.0;
@@ -53,10 +63,16 @@ impl<'a> SettingsMenu<'a> {
                 .inner_margin(egui::Margin::symmetric(12, 8))
                 .show(ui, |ui| {
                     ui.set_width(menu_width);
-                    let mut should_close = false;
+                    let mut close = false;
+                    let mut action = None;
 
                     if menu_item(ui, "表示設定 (準備中)").clicked() {
-                        should_close = true;
+                        close = true;
+                    }
+
+                    if menu_item(ui, "キャッシュを削除").clicked() {
+                        close = true;
+                        action = Some(SettingsAction::ClearCache);
                     }
 
                     ui.add_space(4.0);
@@ -68,11 +84,12 @@ impl<'a> SettingsMenu<'a> {
                             .size(12.0),
                     );
 
-                    should_close
+                    (close, action)
                 })
                 .inner
         });
 
+        let (item_close, action) = popup.inner;
         let menu_rect = popup.response.rect;
         let close_on_escape = ctx.input(|i| i.key_pressed(egui::Key::Escape));
         let clicked_outside = ctx.input(|i| {
@@ -82,9 +99,13 @@ impl<'a> SettingsMenu<'a> {
                     .is_some_and(|pos| !menu_rect.contains(pos) && !button_rect.contains(pos))
         });
 
-        if popup.inner || close_on_escape || (!just_opened && clicked_outside) {
+        let should_close = item_close || close_on_escape || (!just_opened && clicked_outside);
+
+        if should_close {
             *self.open = false;
         }
+
+        action
     }
 }
 

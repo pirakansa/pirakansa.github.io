@@ -1,4 +1,4 @@
-use super::settings_menu::SettingsMenu;
+use super::settings_menu::{SettingsAction, SettingsMenu};
 use crate::app::layout::ResponsiveLayout;
 use crate::app::theme::{background, text};
 
@@ -25,7 +25,7 @@ impl<'a> NavigationBar<'a> {
         }
     }
 
-    pub(crate) fn show(self, ui: &mut egui::Ui) {
+    pub(crate) fn show(self, ui: &mut egui::Ui) -> Option<SettingsAction> {
         let NavigationBar {
             search_query,
             mut settings_menu,
@@ -38,11 +38,12 @@ impl<'a> NavigationBar<'a> {
             .corner_radius(12.0)
             .show(ui, |ui| {
                 if layout.is_compact() {
-                    Self::compact(ui, search_query, &mut settings_menu, layout);
+                    Self::compact(ui, search_query, &mut settings_menu, layout)
                 } else {
-                    Self::spacious(ui, search_query, &mut settings_menu, layout);
+                    Self::spacious(ui, search_query, &mut settings_menu, layout)
                 }
-            });
+            })
+            .inner
     }
 
     fn compact(
@@ -50,13 +51,14 @@ impl<'a> NavigationBar<'a> {
         search_query: &mut String,
         settings_menu: &mut SettingsMenu<'_>,
         layout: ResponsiveLayout,
-    ) {
+    ) -> Option<SettingsAction> {
         ui.vertical(|ui| {
+            let mut action = None;
             ui.spacing_mut().item_spacing.y = 8.0;
             ui.horizontal(|ui| {
                 title_label(ui);
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    settings_menu.show(ui);
+                    action = settings_menu.show(ui);
                     ui.add_space(10.0);
                     ui.label(egui::RichText::new("🔔").color(text::PRIMARY));
                 });
@@ -71,7 +73,9 @@ impl<'a> NavigationBar<'a> {
                     ui.label(egui::RichText::new(*item).color(text::SECONDARY));
                 }
             });
-        });
+            action
+        })
+        .inner
     }
 
     fn spacious(
@@ -79,8 +83,9 @@ impl<'a> NavigationBar<'a> {
         search_query: &mut String,
         settings_menu: &mut SettingsMenu<'_>,
         layout: ResponsiveLayout,
-    ) {
+    ) -> Option<SettingsAction> {
         ui.horizontal(|ui| {
+            let mut action = None;
             ui.horizontal(|ui| {
                 title_label(ui);
                 ui.add_space(20.0);
@@ -90,7 +95,7 @@ impl<'a> NavigationBar<'a> {
             });
 
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                settings_menu.show(ui);
+                action = settings_menu.show(ui);
                 ui.add_space(10.0);
                 ui.label(egui::RichText::new("🔔").color(text::PRIMARY));
                 ui.add_space(16.0);
@@ -100,7 +105,9 @@ impl<'a> NavigationBar<'a> {
                     ui.label(egui::RichText::new(*item).color(text::SECONDARY));
                 }
             });
-        });
+            action
+        })
+        .inner
     }
 }
 

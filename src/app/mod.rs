@@ -4,7 +4,7 @@ mod fonts;
 mod layout;
 pub mod theme;
 
-use components::{AttributionFooter, FeaturedSection, NavigationBar, RepoCarousel};
+use components::{AttributionFooter, FeaturedSection, NavigationBar, RepoCarousel, SettingsAction};
 use data::{load_featured_repo, FeaturedRepo, PortfolioLoadState, PortfolioLoader, RepoSection};
 use egui_extras::install_image_loaders;
 use fonts::install_fonts;
@@ -60,6 +60,24 @@ impl TemplateApp {
             Default::default()
         }
     }
+    fn handle_settings_action(
+        &mut self,
+        action: SettingsAction,
+        ctx: &egui::Context,
+        frame: &mut eframe::Frame,
+    ) {
+        match action {
+            SettingsAction::ClearCache => {
+                let replacement = TemplateApp::default();
+                if let Some(storage) = frame.storage_mut() {
+                    eframe::set_value(storage, eframe::APP_KEY, &replacement);
+                    storage.flush();
+                }
+                ctx.memory_mut(|mem| *mem = egui::Memory::default());
+                *self = replacement;
+            }
+        }
+    }
 }
 
 impl eframe::App for TemplateApp {
@@ -69,7 +87,7 @@ impl eframe::App for TemplateApp {
     }
 
     /// Called each time the UI needs repainting, which may be many times per second.
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
         // URLからポートフォリオデータの取得を開始
         self.portfolio_loader.start_loading(ctx);
 
@@ -94,12 +112,15 @@ impl eframe::App for TemplateApp {
                     .show(ui, |ui| {
                         ui.spacing_mut().item_spacing = egui::vec2(18.0, 14.0);
                         let layout = ResponsiveLayout::from_width(ui.available_width());
-                        NavigationBar::new(
+                        let action = NavigationBar::new(
                             &mut self.search_query,
                             &mut self.settings_menu_open,
                             layout,
                         )
                         .show(ui);
+                        if let Some(action) = action {
+                            self.handle_settings_action(action, ctx, frame);
+                        }
                         FeaturedSection::new(&self.featured, layout).show(ui);
                         ui.separator();
 
