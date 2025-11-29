@@ -12,8 +12,6 @@ impl AttributionFooter {
             ui.label("Powered by ");
             ui.hyperlink_to("pirakansa", "https://github.com/pirakansa");
             ui.label(".");
-            ui.separator();
-            ui.label(format!("Version {}", env!("CARGO_PKG_VERSION")));
         });
     }
 }

@@ -1,5 +1,6 @@
+use super::settings_menu::SettingsMenu;
 use crate::app::layout::ResponsiveLayout;
-use crate::app::theme::{background, button, text};
+use crate::app::theme::{background, text};
 
 const PRIMARY_NAV_ITEMS: &[&str] = &["ホーム"];
 const SECONDARY_NAV_ITEMS: &[&str] = &["マイリスト"];
@@ -7,13 +8,19 @@ const SECONDARY_NAV_ITEMS: &[&str] = &["マイリスト"];
 /// Renders the shared top navigation bar with search and profile shortcuts.
 pub(crate) struct NavigationBar<'a> {
     search_query: &'a mut String,
+    settings_menu: SettingsMenu<'a>,
     layout: ResponsiveLayout,
 }
 
 impl<'a> NavigationBar<'a> {
-    pub(crate) fn new(search_query: &'a mut String, layout: ResponsiveLayout) -> Self {
+    pub(crate) fn new(
+        search_query: &'a mut String,
+        settings_menu_open: &'a mut bool,
+        layout: ResponsiveLayout,
+    ) -> Self {
         Self {
             search_query,
+            settings_menu: SettingsMenu::new(settings_menu_open),
             layout,
         }
     }
@@ -21,6 +28,7 @@ impl<'a> NavigationBar<'a> {
     pub(crate) fn show(self, ui: &mut egui::Ui) {
         let NavigationBar {
             search_query,
+            mut settings_menu,
             layout,
         } = self;
 
@@ -30,20 +38,25 @@ impl<'a> NavigationBar<'a> {
             .corner_radius(12.0)
             .show(ui, |ui| {
                 if layout.is_compact() {
-                    Self::compact(ui, search_query, layout);
+                    Self::compact(ui, search_query, &mut settings_menu, layout);
                 } else {
-                    Self::spacious(ui, search_query, layout);
+                    Self::spacious(ui, search_query, &mut settings_menu, layout);
                 }
             });
     }
 
-    fn compact(ui: &mut egui::Ui, search_query: &mut String, layout: ResponsiveLayout) {
+    fn compact(
+        ui: &mut egui::Ui,
+        search_query: &mut String,
+        settings_menu: &mut SettingsMenu<'_>,
+        layout: ResponsiveLayout,
+    ) {
         ui.vertical(|ui| {
             ui.spacing_mut().item_spacing.y = 8.0;
             ui.horizontal(|ui| {
                 title_label(ui);
                 ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                    ui.add(settings_button());
+                    settings_menu.show(ui);
                     ui.add_space(10.0);
                     ui.label(egui::RichText::new("🔔").color(text::PRIMARY));
                 });
@@ -61,7 +74,12 @@ impl<'a> NavigationBar<'a> {
         });
     }
 
-    fn spacious(ui: &mut egui::Ui, search_query: &mut String, layout: ResponsiveLayout) {
+    fn spacious(
+        ui: &mut egui::Ui,
+        search_query: &mut String,
+        settings_menu: &mut SettingsMenu<'_>,
+        layout: ResponsiveLayout,
+    ) {
         ui.horizontal(|ui| {
             ui.horizontal(|ui| {
                 title_label(ui);
@@ -72,7 +90,7 @@ impl<'a> NavigationBar<'a> {
             });
 
             ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                ui.add(settings_button());
+                settings_menu.show(ui);
                 ui.add_space(10.0);
                 ui.label(egui::RichText::new("🔔").color(text::PRIMARY));
                 ui.add_space(16.0);
@@ -84,13 +102,6 @@ impl<'a> NavigationBar<'a> {
             });
         });
     }
-}
-
-fn settings_button() -> egui::Button<'static> {
-    egui::Button::new(egui::RichText::new("⚙ 設定").color(text::PRIMARY))
-        .fill(button::settings_fill())
-        .min_size(egui::vec2(90.0, 32.0))
-        .corner_radius(8.0)
 }
 
 fn title_label(ui: &mut egui::Ui) {

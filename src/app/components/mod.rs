@@ -4,6 +4,7 @@ mod featured;
 mod footer;
 mod navigation;
 mod repo_card;
+mod settings_menu;
 mod tag_chip;
 
 pub(crate) use carousel::RepoCarousel;

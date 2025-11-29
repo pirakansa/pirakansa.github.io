@@ -19,6 +19,8 @@ pub struct TemplateApp {
     sections: Vec<RepoSection>,
     search_query: String,
     #[serde(skip)]
+    settings_menu_open: bool,
+    #[serde(skip)]
     portfolio_loader: PortfolioLoader,
 }
 
@@ -30,6 +32,7 @@ impl Default for TemplateApp {
             featured,
             sections: Vec::new(),
             search_query: String::new(),
+            settings_menu_open: false,
             portfolio_loader: PortfolioLoader::new(),
         }
     }
@@ -91,7 +94,12 @@ impl eframe::App for TemplateApp {
                     .show(ui, |ui| {
                         ui.spacing_mut().item_spacing = egui::vec2(18.0, 14.0);
                         let layout = ResponsiveLayout::from_width(ui.available_width());
-                        NavigationBar::new(&mut self.search_query, layout).show(ui);
+                        NavigationBar::new(
+                            &mut self.search_query,
+                            &mut self.settings_menu_open,
+                            layout,
+                        )
+                        .show(ui);
                         FeaturedSection::new(&self.featured, layout).show(ui);
                         ui.separator();
 
