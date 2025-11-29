@@ -53,7 +53,10 @@ impl<'a> RepoCard<'a> {
                                         let fallback_icon = egui::RichText::new("🖼")
                                             .color(text::WHITE_ALPHA_180)
                                             .size(layout.preview_height() * 0.5);
-                                        ui.label(fallback_icon);
+                                        ui.add(
+                                            egui::Label::new(fallback_icon)
+                                                .selectable(false),
+                                        );
                                     }
                                 });
                             });

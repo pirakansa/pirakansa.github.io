@@ -17,6 +17,7 @@ impl<'a> RepoCarousel<'a> {
 
     pub(crate) fn show(self, ui: &mut egui::Ui) {
         let RepoCarousel { section, layout } = self;
+        ui.add_space(8.0);
         ui.heading(
             egui::RichText::new(&section.name)
                 .size(18.0)
