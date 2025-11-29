@@ -36,8 +36,8 @@ impl<'a> RepoCarousel<'a> {
                         ui.add_space(12.0);
                     }
                 });
-                // Keep the scroll bar from overlapping the card content.
-                ui.add_space(8.0);
             });
+        // Keep the scroll bar from overlapping the card content.
+        ui.add_space(8.0);
     }
 }
