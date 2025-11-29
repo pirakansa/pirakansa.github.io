@@ -2,6 +2,7 @@ use crate::app::theme::{background, button, stroke, text};
 
 /// Actions emitted from the settings menu.
 pub(crate) enum SettingsAction {
+    RefreshRepoData,
     ClearCache,
 }
 
@@ -65,6 +66,13 @@ impl<'a> SettingsMenu<'a> {
                     ui.set_width(menu_width);
                     let mut close = false;
                     let mut action = None;
+
+                    if menu_item(ui, "リポジトリデータ更新").clicked() {
+                        close = true;
+                        action = Some(SettingsAction::RefreshRepoData);
+                    }
+
+                    ui.add_space(4.0);
 
                     if menu_item(ui, "表示設定 (準備中)").clicked() {
                         close = true;

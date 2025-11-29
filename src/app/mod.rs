@@ -67,6 +67,10 @@ impl TemplateApp {
         frame: &mut eframe::Frame,
     ) {
         match action {
+            SettingsAction::RefreshRepoData => {
+                self.portfolio_loader = PortfolioLoader::new();
+                self.portfolio_loader.start_loading(ctx);
+            }
             SettingsAction::ClearCache => {
                 let replacement = TemplateApp::default();
                 if let Some(storage) = frame.storage_mut() {
