@@ -4,7 +4,7 @@ pub(crate) struct RepoSummary {
     pub(crate) description: String,
     pub(crate) image_url: Option<String>,
     #[serde(default)]
-    pub(crate) badges: Vec<String>,
+    pub(crate) badges: Option<String>,
     pub(crate) updated_at: String,
 }
 

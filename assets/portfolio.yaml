@@ -3,14 +3,11 @@
     - name: sandbox-pages
       description: react + vite 構成の遊び場です。GitHub Flowで運用します。
       image_url: https://placehold.co/600x400.png
-      badges:
-        - Rust
+      badges: Rust
       updated_at: "2024-05-28"
     - name: Gridelle
       description: Gridelle is an application that lets you view and edit YAML workbooks through a spreadsheet-like UI.
-      badges:
-        - WASM
-        - Rust
+      badges: WASM, Rust
       image_url: https://raw.githubusercontent.com/pirakansa/Gridelle/refs/heads/main/src/assets/logo.jpg
       updated_at: "2024-05-05"
     - name: StreamNotes
@@ -23,13 +20,11 @@
     - name: Mapt4tPanels
       description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
       image_url: https://placehold.co/600x400.png
-      badges:
-        - Rust
+      badges: Rust
       updated_at: "2024-05-28"
     - name: Ci234tyF44low
       description: 都市データをブラウeeザで可視化する WASM ダッシュボード
-      badges:
-        - WASM
+      badges: WASM
       updated_at: "2024-05-05"
     - name: Stre342amNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツール
@@ -39,13 +34,11 @@
       updated_at: "2024-04-22"
     - name: MapPa42342neeeels
       description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
-      badges:
-        - Rust
+      badges: Rust
       updated_at: "2024-05-28"
     - name: "55"
       description: 都市データをブラウザで可視化する WASM ダッシュボード
-      badges:
-        - WASM
+      badges: WASM
       updated_at: "2024-05-05"
     - name: Stre44444444444fesamNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツール
@@ -57,16 +50,14 @@
   items:
     - name: OrbitQueue
       description: Rust + NATS で書かれた軽量イベントキュー
-      badges:
-        - Async
+      badges: Async
       updated_at: "2024-06-10"
     - name: DeltaLakehouse
       description: S3 互換ストレージ向けの分析基盤ツール群
       updated_at: "2024-05-15"
     - name: EchoStack
       description: gRPC/GraphQL を共存させたマルチテナント API
-      badges:
-        - gRPC
+      badges: gRPC
       updated_at: "2024-04-10"
     - name: StreamNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツール
@@ -76,13 +67,11 @@
       updated_at: "2024-04-22"
     - name: Mapt4tPanels
       description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
-      badges:
-        - Rust
+      badges: Rust
       updated_at: "2024-05-28"
     - name: Ci234tyF44low
       description: 都市データをブラウeeザで可視化する WASM ダッシュボード
-      badges:
-        - WASM
+      badges: WASM
       updated_at: "2024-05-05"
     - name: Stre342amNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツール
@@ -92,13 +81,11 @@
       updated_at: "2024-04-22"
     - name: MapPa42342neeeels
       description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
-      badges:
-        - Rust
+      badges: Rust
       updated_at: "2024-05-28"
     - name: "55"
       description: 都市データをブラウザで可視化する WASM ダッシュボード
-      badges:
-        - WASM
+      badges: WASM
       updated_at: "2024-05-05"
     - name: Stre44444444444fesamNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツール
@@ -113,13 +100,11 @@
       updated_at: "2024-03-30"
     - name: Trailblazer
       description: CI 向けの Rust ベンチマークランナー
-      badges:
-        - CI
+      badges: CI
       updated_at: "2024-03-18"
     - name: OrbitalTestkit
       description: WebAssembly を用いたシナリオテストユーティリティ
-      badges:
-        - Testing
+      badges: Testing
       updated_at: "2024-03-01"
     - name: StreamNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツール
@@ -129,13 +114,11 @@
       updated_at: "2024-04-22"
     - name: Mapt4tPanels
       description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
-      badges:
-        - Rust
+      badges: Rust
       updated_at: "2024-05-28"
     - name: Ci234tyF44low
       description: 都市データをブラウeeザで可視化する WASM ダッシュボード
-      badges:
-        - WASM
+      badges: WASM
       updated_at: "2024-05-05"
     - name: Stre342amNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツール
@@ -145,13 +128,11 @@
       updated_at: "2024-04-22"
     - name: MapPa42342neeeels
       description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
-      badges:
-        - Rust
+      badges: Rust
       updated_at: "2024-05-28"
     - name: "55"
       description: 都市データをブラウザで可視化する WASM ダッシュボード
-      badges:
-        - WASM
+      badges: WASM
       updated_at: "2024-05-05"
     - name: Stre44444444444fesamNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツール

@@ -72,11 +72,15 @@ impl<'a> RepoCard<'a> {
                                 .small()
                                 .color(text::PRIMARY),
                         );
-                        if !repo.badges.is_empty() {
+                        if let Some(badges) = &repo.badges {
                             ui.add_space(4.0);
                             ui.horizontal_wrapped(|ui| {
                                 ui.spacing_mut().item_spacing.x = 4.0;
-                                for badge in &repo.badges {
+                                for badge in badges
+                                    .split(',')
+                                    .map(|s| s.trim())
+                                    .filter(|s| !s.is_empty())
+                                {
                                     TagChip::new(badge).show(ui);
                                 }
                             });
