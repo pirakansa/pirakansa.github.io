@@ -1,4 +1,5 @@
-- row-major: items
+- meta:
+    rowKey: items
   name: My Repositories
   items:
     - name: sandbox-pages
@@ -47,7 +48,8 @@
     - name: Streff2222222aああmNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
       updated_at: "2024-04-22"
-- row-major: items
+- meta:
+    rowKey: items
   name: クラウド / バックエンド
   items:
     - name: OrbitQueue
@@ -95,7 +97,8 @@
     - name: Streff2222222aああmNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
       updated_at: "2024-04-22"
-- row-major: items
+- meta:
+    rowKey: items
   name: ツール / ライブラリ
   items:
     - name: GlyphAtlas

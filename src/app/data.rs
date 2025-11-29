@@ -8,11 +8,17 @@ pub(crate) struct RepoSummary {
     pub(crate) updated_at: String,
 }
 
+#[derive(Clone, serde::Deserialize, serde::Serialize, PartialEq, Eq, Default)]
+pub(crate) struct SectionMeta {
+    #[serde(rename = "rowKey", default)]
+    pub(crate) row_key: Option<String>,
+}
+
 #[derive(Clone, serde::Deserialize, serde::Serialize, PartialEq, Eq)]
 pub(crate) struct RepoSection {
     pub(crate) name: String,
-    #[serde(rename = "row-major", default)]
-    pub(crate) row_major: Option<String>,
+    #[serde(default)]
+    pub(crate) meta: SectionMeta,
     pub(crate) items: Vec<RepoSummary>,
 }
 
