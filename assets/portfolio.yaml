@@ -3,7 +3,7 @@
     - name: sandbox-pages
       description: react + vite 構成の遊び場です。GitHub Flowで運用します。
       image_url: https://placehold.co/600x400.png
-      badges: Rust
+      badges: Rust,aaa kkk
       updated_at: "2024-05-28"
     - name: Gridelle
       description: Gridelle is an application that lets you view and edit YAML workbooks through a spreadsheet-like UI.
@@ -128,7 +128,7 @@
       updated_at: "2024-04-22"
     - name: MapPa42342neeeels
       description: egui × 地図 UI でパネルを並べ替えられる Rust 製デモ
-      badges: Rust
+      badges: Rust,jlasda,jjjddj, asda laksda
       updated_at: "2024-05-28"
     - name: "55"
       description: 都市データをブラウザで可視化する WASM ダッシュボード
