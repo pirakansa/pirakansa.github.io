@@ -34,7 +34,11 @@ impl<'a> RepoCard<'a> {
                             .show(ui, |ui| {
                                 ui.set_height(layout.preview_height());
                                 ui.centered_and_justified(|ui| {
-                                    if let Some(image_url) = &repo.image_url {
+                                    let image_url = repo
+                                        .image_url
+                                        .as_ref()
+                                        .filter(|url| !url.trim().is_empty());
+                                    if let Some(image_url) = image_url {
                                         let max_size = egui::vec2(
                                             ui.available_width(),
                                             layout.preview_height(),
@@ -66,11 +70,18 @@ impl<'a> RepoCard<'a> {
                                 .color(text::SECONDARY),
                         );
                         ui.add_space(4.0);
-                        ui.label(
-                            egui::RichText::new(format!("最終更新: {}", repo.updated_at))
-                                .small()
-                                .color(text::PRIMARY),
-                        );
+                        if let Some(updated_at) = repo
+                            .updated_at
+                            .as_ref()
+                            .map(|value| value.trim())
+                            .filter(|value| !value.is_empty())
+                        {
+                            ui.label(
+                                egui::RichText::new(format!("最終更新: {updated_at}"))
+                                    .small()
+                                    .color(text::PRIMARY),
+                            );
+                        }
                         if let Some(badges) = &repo.badges {
                             ui.add_space(4.0);
                             ui.horizontal_wrapped(|ui| {
