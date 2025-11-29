@@ -32,7 +32,7 @@ Rust + egui/eframe で構築したリポジトリギャラリー UI です。レ
 
 ## ブラウザ版の手順
 1. 上記「Web 版の前提」を満たします。
-2. `make web` を実行すると Trunk が立ち上がり、`index.html` の `<canvas id="the_canvas_id">` に描画されます。
+2. `make web` を実行すると Trunk が立ち上がり、`index.html` の `<canvas id="canvas_id">` に描画されます。
 3. 配布用アセットが必要な場合は `make web-release` で `dist/` を生成します。
 
 ## データの更新方法
