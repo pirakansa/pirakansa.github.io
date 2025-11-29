@@ -1,4 +1,5 @@
-- name: My Repositories
+- row-major: items
+  name: My Repositories
   items:
     - name: sandbox-pages
       description: react + vite 構成の遊び場です。GitHub Flowで運用します。
@@ -46,7 +47,8 @@
     - name: Streff2222222aああmNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
       updated_at: "2024-04-22"
-- name: クラウド / バックエンド
+- row-major: items
+  name: クラウド / バックエンド
   items:
     - name: OrbitQueue
       description: Rust + NATS で書かれた軽量イベントキュー
@@ -93,7 +95,8 @@
     - name: Streff2222222aああmNotes
       description: ライブ配信ログを整理する Tauri + SQLite ツーｗｗル
       updated_at: "2024-04-22"
-- name: ツール / ライブラリ
+- row-major: items
+  name: ツール / ライブラリ
   items:
     - name: GlyphAtlas
       description: フォントを高速にバンドルするビルドツール

@@ -11,6 +11,8 @@ pub(crate) struct RepoSummary {
 #[derive(Clone, serde::Deserialize, serde::Serialize, PartialEq, Eq)]
 pub(crate) struct RepoSection {
     pub(crate) name: String,
+    #[serde(rename = "row-major", default)]
+    pub(crate) row_major: Option<String>,
     pub(crate) items: Vec<RepoSummary>,
 }
 
