@@ -26,6 +26,7 @@ impl<'a> RepoCarousel<'a> {
             .id_salt(section.name.as_str())
             .animated(true)
             .auto_shrink([false, true])
+            .scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden)
             .show(ui, |ui| {
                 ui.with_layout(egui::Layout::left_to_right(egui::Align::Min), |ui| {
                     for repo in &section.items {
