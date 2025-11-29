@@ -1,7 +1,8 @@
 use std::sync::{Arc, Mutex};
 
 /// ポートフォリオデータを取得するURL
-pub(crate) const PORTFOLIO_URL: &str = "https://raw.githubusercontent.com/pirakansa/Gridelle_example/refs/heads/main/portfolio.yaml";
+pub(crate) const PORTFOLIO_URL: &str =
+    "https://raw.githubusercontent.com/pirakansa/Gridelle_example/refs/heads/main/portfolio.yaml";
 
 #[derive(Clone, serde::Deserialize, serde::Serialize, PartialEq, Eq)]
 pub(crate) struct RepoSummary {
