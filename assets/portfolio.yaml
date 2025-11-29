@@ -4,7 +4,7 @@
   items:
     - name: sandbox-pages
       description: react + vite 構成の遊び場です。GitHub Flowで運用します。
-      image_url: https://placehold.co/600x400.png
+      image_url: https://raw.githubusercontent.com/pirakansa/sandbox-pages/refs/heads/main/src/assets/logo.jpeg
       badges: Rust,aaa kkk
       updated_at: "2024-05-28"
     - name: Gridelle
