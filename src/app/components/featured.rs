@@ -113,7 +113,7 @@ impl<'a> FeaturedSection<'a> {
     fn logo_image() -> &'static egui::ColorImage {
         static LOGO_IMAGE: OnceLock<egui::ColorImage> = OnceLock::new();
         LOGO_IMAGE.get_or_init(|| {
-            let rgba = load_from_memory(include_bytes!("../../../assets/logo.jpeg"))
+            let rgba = load_from_memory(include_bytes!("../../../assets/logo.webp"))
                 .expect("embedded logo file should decode")
                 .to_rgba8();
             let (width, height) = rgba.dimensions();

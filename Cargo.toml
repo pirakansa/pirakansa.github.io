@@ -16,7 +16,7 @@ log = "0.4.27"
 serde = { version = "1.0.219", features = ["derive"] }
 serde_yaml = "0.9.34"
 egui_extras = { version = "0.33.2", features = ["image", "http"] }
-image = { version = "0.25.9", default-features = false, features = ["jpeg"] }
+image = { version = "0.25.9", default-features = false, features = ["jpeg", "webp"] }
 
 # native:
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
