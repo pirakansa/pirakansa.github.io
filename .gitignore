@@ -24,3 +24,5 @@ target
 /dist/
 /assets/*.ttf
 /assets/*.otf
+
+/.vscode/settings.json
