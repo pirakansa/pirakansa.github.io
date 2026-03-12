@@ -16,4 +16,3 @@ if [ "$USERGROUPID" = "" ]; then
     echo "USERGROUPID=$(id -g $USER)" >> .env
 fi
 
-
