@@ -16,6 +16,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - uses: pirakansa/vorbere@v0
+        with:
+          version: v0.3.1
+
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -28,7 +32,7 @@ jobs:
         uses: jetli/trunk-action@v0.5.0
 
       - name: Build
-        run: make web-release
+        run: vorbere run web-release
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

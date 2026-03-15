@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 RUN apt update -y && \
     apt install -y curl git sudo zstd make \
-        libclang-dev libgtk-3-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libxkbcommon-dev libssl-dev
+        libclang-dev libgtk-3-dev libxcb-render0-dev libxcb-shape0-dev libxcb-xfixes0-dev libxkbcommon-dev libssl-dev libxkbcommon-x11-dev
 
 
 ARG CONTAINER_USERNAME=builder
@@ -24,8 +24,8 @@ RUN useradd -u ${CONTAINER_USERID} -s /bin/bash -m ${CONTAINER_USERNAME} && \
 
 USER ${CONTAINER_USERNAME}
 
-RUN rustup default stable && \
-    rustup component add rustfmt clippy && \
+RUN curl -fsSL https://raw.githubusercontent.com/pirakansa/vorbere/main/install.sh | bash && \
+    rustup default stable && \
     cargo install trunk && \
     cargo install cargo-audit
 

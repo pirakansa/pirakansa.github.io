@@ -4,26 +4,46 @@ This document is the README for AI coding agents. It complements the human-facin
 
 ---
 
-## 1. Setup Steps
+
+## Documentation of Process vs Policy
+
+This repository separates **policy** from **how-to guidance**:
+
+- **AGENTS.md = Policy (MUST/MUST NOT)**  
+  Contains the mandatory rules agents must follow (e.g., language requirements, required sections, validation expectations, boundaries).
+  Keep it short and stable.
+
+- **SKILLS = Procedure / Templates / Checklists**  
+  Contains step-by-step workflows, templates, and checklists used to comply with policy.
+  Prefer updating skills when improving writing structure or workflow details.
+
+Rule of thumb:
+- If it is a non-negotiable rule for reviews/CI: put it in **AGENTS.md**.
+- If it is an example, template, or writing process: put it in a **skill**.
+
+
+---
+
+## Setup Steps
 
 * Recommended: VS Code Dev Container / GitHub Codespaces (use the `.devcontainer/` image).
 * Base packages: `sudo apt-get install build-essential`.
 * Rust toolchain: `rustup default stable` (rustfmt/clippy components are required).
-* Helper tools: `make` (see the Makefile targets below).
+* Task runner: `vorbere.yaml` via `vorbere run <task>` (CI uses the tasks described later).
 
 ---
 
-## 2. Build & Validate
+## Build & Validate
 
-* Build: `make build`
-* Test: `make test`
-* Lint: `make lint`
-* Cleanup: `make clean` or `cargo clean`.
+* Build: `vorbere run build`
+* Test: `vorbere run test`
+* Check: `vorbere run check`
+* Cleanup: `vorbere run clean` or `cargo clean`.
 * For CLI usage and command examples, see the Usage section in README.md.
 
 ---
 
-## 3. Project Structure
+## Project Structure
 
 We follow the **package layout described in The Cargo Book** for a project consisting of a single binary plus shared library code.
 
@@ -31,7 +51,7 @@ We follow the **package layout described in The Cargo Book** for a project consi
 .
 ├── Cargo.toml
 ├── Cargo.lock
-├── Makefile
+├── vorbere.yaml
 ├── src/
 │   ├── lib.rs
 │   ├── main.rs
@@ -57,16 +77,15 @@ We follow the **package layout described in The Cargo Book** for a project consi
 ### Agent-Specific Rules
 
 * Place new files according to the directory guidelines above; avoid introducing unnecessary top-level directories.
-* When modifying existing functions, add or update unit tests and confirm `make test` passes.
+* When modifying existing functions, add or update unit tests and confirm `vorbere run test` passes.
 * When writing files or accessing external resources, use temporary directories so existing test data is not overwritten.
 
 
 ---
 
-## 4. Coding Standards
+## Coding Standards
 
-* Always run `make fmt-check` so the code remains formatted.
-* Run `make lint` for static checks and ensure there are no warnings (CI requirement).
+* Always run `vorbere run check` and ensure all included static checks pass with no warnings (CI requirement).
 * Prefer `thiserror` for error types; use `anyhow` only in binaries.
 * Naming: modules in `snake_case`, types in `UpperCamelCase`.
 * Extract magic numbers/URLs into constants with meaningful names.
@@ -74,33 +93,32 @@ We follow the **package layout described in The Cargo Book** for a project consi
 
 ---
 
-## 5. Testing & Verification
+## Testing & Verification
 
-* Unit tests: `make test`
+* Unit tests: `vorbere run test`
 * For additional file or network operations, use temp directories or `httptest` to avoid external dependencies.
 * When command behavior changes, keep usage examples in `README.md` and fixtures under `test` consistent.
 
 ### Static Analysis / Lint / Vulnerability Scanning
 
-* Static analysis: `make clippy`
-* Code quality: `make fmt-check`
-* Vulnerability scanning: `make audit`
+* Run `vorbere run check` as the default entry point for static analysis, linting, vulnerability scanning, and related verification.
+* If needed, use underlying component commands only to investigate or isolate specific failures (for example, `vorbere run vulnerability`).
 
 ---
 
-## 6. CI Requirements
+## CI Requirements
 
 GitHub Actions (`.github/workflows/ci.yml`) runs the following:
 
-* `make lint`
-* `make test`
-* `make build`
+* `vorbere run check`
+* `vorbere run test`
+* `vorbere run build`
 
-Confirm `make lint` / `make test` / `make build` succeed locally before opening a PR. If they fail, format and validate locally, then rerun.
+Confirm `vorbere run check` / `vorbere run test` / `vorbere run build` succeed locally before opening a PR. If they fail, format and validate locally, then rerun.
 
 ---
 
-## 7. Security & Data Handling
+## Security & Data Handling
 
 * Do not commit secrets or confidential information.
 * Do not log personal or authentication data in logs or error messages.
@@ -109,16 +127,15 @@ Confirm `make lint` / `make test` / `make build` succeed locally before opening 
 
 ---
 
-## 8. Agent Notes
+## Agent Notes
 
 * If multiple `AGENTS.md` files exist, reference the one closest to your working directory (this repository only has the top-level file).
 * When instructions conflict, prioritize explicit user prompts and clarify any uncertainties.
-* Before and after your work, ensure `make lint`, `make test`, and `make build` all succeed; report the cause and fix if any of them fail.
-
+* Before and after your work, ensure `vorbere run check`, `vorbere run test`, and `vorbere run build` all succeed; report the cause and fix if any of them fail.
 
 ---
 
-## 9. Branch Workflow (GitHub Flow)
+## Branch Workflow (GitHub Flow)
 
 This project follows **GitHub Flow** based on `main`.
 
@@ -135,60 +152,45 @@ This project follows **GitHub Flow** based on `main`.
 ---
 
 
-## 10. Commit Message Policy
+## Commit Message Policy
 
-Commit messages follow **Conventional Commits**. Agents must comply. Write the comment section in **English**.
+Commit messages MUST follow **Conventional Commits** and MUST be written in **English**.
 
-### Format
+### Header
+`type(scope?): description`
 
-```
-type(scope?): description
-```
-
-* `type`: feat / fix / docs / style / refactor / test / chore
-* `scope`: Optional; module or directory names, etc.
-* `description`: Describe the change concisely in English.
+- `type`: feat / fix / docs / style / refactor / test / chore
+- `scope`: optional (module/package/directory)
+- `description`: concise present-tense English summary
 
 ### Body
-
-* Write the WHY (reason for the change) in a single English sentence.
-* List the HOW (per-file changes) in English.
-
-```
-- src/lib.rs: Optimized setting loading process
-- docs/setup.md: Update the initial setup procedure
-```
+- First body line MUST state the **WHY** (reason for the change) in a single English sentence.
+- Then list the **HOW** as per-file bullet points in English (`path: concrete change`).
+- Do not claim tests passed unless they were actually run.
 
 ### Granularity
+- One semantic change per commit.
+- Keep generated files separate when practical; do not mix with other changes.
 
-* Default to one semantic change per commit.
-* Separate generated code into logical units; do not mix with other changes.
-
-### PRs and Commits
-
-* Always document **Motivation / Design / Tests / Risks** in English in the PR description.
-* Follow team policy on squashing after reviews; if none, keep the original commit structure.
+For structured authoring (template, checklist), use the skill: `conventional-commits-authoring`.
 
 ---
 
-## 11. Documentation Policy
+## Documentation Policy
 
-* **README.md (top level)**:
-  * Introduction: tool overview, usage, installation.
-  * Later sections: developer build steps, testing instructions.
-  * Keep it accessible so first-time users can onboard smoothly.
-
-* **docs/**:
-  * Create detailed designs or supplemental docs as needed. None exist yet, so define structure and filenames when adding.
-
-* **Operational Guidelines**:
-  * Update documentation alongside code changes; if none are needed, note "No documentation changes" in the PR description.
-  * Verify sample code and command examples actually work.
-  * Include generation scripts when submitting auto-generated docs.
-
+- **Language**: All documentation (README.md, docs/, inline doc-comments) MUST be written in **English**.
+- **README.md (top level)** is onboarding-first: overview, install, and one quick-start. Keep it short and link to details in `docs/`.
+- **docs/** holds detailed documentation and is organized as:
+  - **User guides** (practical usage / workflows)
+  - **Specification references** (contracts: schema, flags, processing rules)
+  - If content mixes both, split it into the appropriate documents.
+- **Source of truth**
+  - For post-implementation updates, treat **code + passing tests** as SoT and use `docs-maintenance-implementation-sync`.
+  - For design-first work where the **spec is SoT**, use the spec-driven skills (`spec-driven-doc-authoring` / `spec-to-code-implementation`).
+- **PR hygiene**: Update docs with behavior changes. If no doc updates are needed, explicitly note **"No documentation changes"** in the PR description.
 ---
 
-## 12. Dependency Management Policy
+## Dependency Management Policy
 
 * Add dependencies with `cargo add <crate>`; do not edit Cargo.toml by hand for adds.
 * Use SemVer pins; avoid wildcards unless necessary.
@@ -198,13 +200,13 @@ type(scope?): description
 
 ---
 
-## 13. Release Process
+## Release Process
 
 * Follow **SemVer** for versioning.
-* Tag new releases with `git tag vX.Y.Z` and verify `make release` outputs.
+* Tag new releases with `git tag vX.Y.Z` and verify `vorbere run release` outputs.
 * Update CHANGELOG.md and reflect the changes in the release notes (include generators in the PR if they were used).
 
-### 13.1 CHANGELOG.md Policy
+### CHANGELOG.md Policy
 
 * **Sections**: Follow `[Keep a Changelog]` categories - `Added / Changed / Fixed / Deprecated / Removed / Security`.
 * **Language**: English.
@@ -223,35 +225,20 @@ type(scope?): description
 
 ---
 
-## 14. PR Template
+## PR Template
 
-Include the following items when creating a PR:
+PR descriptions MUST be written in **English** and MUST include:
+- Motivation
+- Design
+- Tests (only what was actually run)
+- Risks
 
-* **Motivation**: Why this change is needed.
-* **Design**: How you implemented it.
-* **Tests**: Which tests were run.
-* **Risks**: Potential side effects or concerns.
-
-Template example:
-
-```
-### Motivation
-...
-
-### Design
-...
-
-### Tests
-...
-
-### Risks
-...
-```
+For structured authoring (template, checklist), use the skill: `pr-description-authoring`.
 
 ---
 
-## 15. Checklist
+## Checklist
 
-* [ ] `make lint`
-* [ ] `make test`
-* [ ] `make build`
+* [ ] `vorbere run check`
+* [ ] `vorbere run test`
+* [ ] `vorbere run build`

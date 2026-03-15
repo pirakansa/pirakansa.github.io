@@ -11,6 +11,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - uses: pirakansa/vorbere@v0
+        with:
+          version: v0.3.1
+
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
@@ -19,5 +23,14 @@ jobs:
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2
 
+      - name: Install cargo-audit
+        run: cargo install cargo-audit --locked
+
+      - name: Check
+        run: vorbere run check
+
       - name: Test
-        run: make test
+        run: vorbere run test
+
+      - name: Build
+        run: vorbere run build
