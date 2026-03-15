@@ -45,6 +45,7 @@ tasks:
     run: cargo fmt --all -- --check
     desc: verify formatting
   clippy:
+    depends_on: [assets]
     run: cargo clippy --all-targets -- -D warnings
     desc: run clippy with warnings denied
   vulnerability:
